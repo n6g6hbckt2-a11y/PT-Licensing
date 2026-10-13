@@ -289,6 +289,58 @@ textarea {
   resize: vertical;
 }
 
+/* ---------- Fees ---------- */
+
+.fee-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.fee-list li {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.1rem 1.25rem;
+}
+
+.fee-item__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.fee-item__head h3 {
+  margin: 0;
+}
+
+.fee-item__price {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.fee-list li > p {
+  margin: 0 0 0.75em;
+  color: var(--text-muted);
+}
+
+.fee-list .fee-item__note {
+  margin: auto 0 0;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.875rem;
+  font-style: italic;
+}
+
 /* ---------- Footer ---------- */
 
 .site-footer {
@@ -353,7 +405,8 @@ textarea {
 /* ---------- Responsive ---------- */
 
 @media (min-width: 600px) {
-  .service-list {
+  .service-list,
+  .fee-list {
     grid-template-columns: repeat(2, 1fr);
   }
 }
