@@ -4,7 +4,7 @@
  * The choice is remembered in this browser; "Cookie settings" in the footer reopens the banner.
  */
 (function () {
-  var GA_ID = 'G-XXXXXXXXXX'; // Google Analytics Measurement ID
+  var GA_ID = 'G-BQBSKFRNF9'; // Google Analytics Measurement ID
   var KEY = 'pt-cookie-consent';
 
   function getChoice() {
@@ -25,7 +25,7 @@
     window.dataLayer = window.dataLayer || [];
     window.gtag = function () { window.dataLayer.push(arguments); };
     window.gtag('js', new Date());
-    window.gtag('config', GA_ID, { anonymize_ip: true });
+    window.gtag('config', GA_ID);
   }
 
   function clearAnalyticsCookies() {
