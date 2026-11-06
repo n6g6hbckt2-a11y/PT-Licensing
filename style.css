@@ -363,6 +363,11 @@ textarea {
   margin: 0;
 }
 
+.site-footer .analytics-note {
+  flex-basis: 100%;
+  font-size: 0.8rem;
+}
+
 /* ---------- Floating WhatsApp button ---------- */
 
 .whatsapp-float {
@@ -419,52 +424,6 @@ textarea {
   .site-header .container {
     flex-wrap: nowrap;
   }
-}
-
-/* ---------- Cookie consent banner ---------- */
-
-.cookie-banner {
-  position: fixed;
-  left: 1rem;
-  right: 1rem;
-  bottom: 1rem;
-  z-index: 1100;
-  max-width: 40rem;
-  margin: 0 auto;
-  padding: 1rem 1.25rem;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
-  font-size: 0.95rem;
-}
-
-.cookie-banner p {
-  margin: 0 0 0.75rem;
-}
-
-.cookie-banner__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.cookie-banner .button {
-  border: 1px solid var(--accent);
-  cursor: pointer;
-  font: inherit;
-  font-weight: 600;
-}
-
-.cookie-banner .button--secondary {
-  background: var(--surface);
-  color: var(--accent);
-}
-
-.cookie-banner .button--secondary:hover,
-.cookie-banner .button--secondary:focus {
-  background: var(--bg);
-  color: var(--accent-dark);
 }
 
 /* ---------- About page ---------- */

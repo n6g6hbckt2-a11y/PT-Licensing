@@ -1,18 +1,23 @@
 /*
- * Cookie consent + Google Analytics loader.
- * Analytics only loads after the visitor clicks "Accept".
- * The choice is remembered in this browser; "Cookie settings" in the footer reopens the banner.
+ * Google Analytics loader with a simple opt-out (no cookie banner).
+ * Analytics is used only for site statistics, so it runs by default
+ * under the UK statistical-purposes exemption. Visitors can switch it
+ * off (and back on) with the "Turn off analytics" link in the footer;
+ * the choice is remembered in this browser.
  */
 (function () {
   var GA_ID = 'G-YQE4RECHMX'; // PT Licensing GA4 Measurement ID
-  var KEY = 'pt-cookie-consent';
+  var KEY = 'pt-cookie-consent'; // kept from the old banner so earlier "Reject" choices still apply
 
-  function getChoice() {
-    try { return localStorage.getItem(KEY); } catch (e) { return null; }
+  function isOptedOut() {
+    try { return localStorage.getItem(KEY) === 'denied'; } catch (e) { return false; }
   }
 
-  function setChoice(value) {
-    try { localStorage.setItem(KEY, value); } catch (e) { /* storage blocked: ask again next visit */ }
+  function setOptedOut(out) {
+    try {
+      if (out) localStorage.setItem(KEY, 'denied');
+      else localStorage.removeItem(KEY);
+    } catch (e) { /* storage blocked: nothing to remember */ }
   }
 
   function loadAnalytics() {
@@ -41,50 +46,31 @@
     });
   }
 
-  function hideBanner() {
-    var b = document.getElementById('cookie-banner');
-    if (b) b.remove();
-  }
-
-  function showBanner() {
-    if (document.getElementById('cookie-banner')) return;
-    var b = document.createElement('div');
-    b.id = 'cookie-banner';
-    b.className = 'cookie-banner';
-    b.setAttribute('role', 'region');
-    b.setAttribute('aria-label', 'Cookie consent');
-    b.innerHTML =
-      '<p>We use optional analytics cookies to understand how visitors use this site so we can improve it. ' +
-      'They are only set if you accept.</p>' +
-      '<div class="cookie-banner__actions">' +
-      '<button type="button" class="button" data-consent="granted">Accept</button>' +
-      '<button type="button" class="button button--secondary" data-consent="denied">Reject</button>' +
-      '</div>';
-    b.addEventListener('click', function (e) {
-      var choice = e.target.getAttribute && e.target.getAttribute('data-consent');
-      if (!choice) return;
-      setChoice(choice);
-      hideBanner();
-      if (choice === 'granted') {
-        loadAnalytics();
-      } else {
-        clearAnalyticsCookies();
-        if (window.__ptAnalyticsLoaded) location.reload();
-      }
-    });
-    document.body.appendChild(b);
+  function updateLinks() {
+    var label = isOptedOut() ? 'Turn analytics back on' : 'Turn off analytics';
+    var links = document.querySelectorAll('[data-analytics-toggle]');
+    Array.prototype.forEach.call(links, function (link) { link.textContent = label; });
   }
 
   function init() {
-    var choice = getChoice();
-    if (choice === 'granted') loadAnalytics();
-    else if (choice !== 'denied') showBanner();
+    if (!isOptedOut()) loadAnalytics();
+    updateLinks();
 
-    var links = document.querySelectorAll('[data-cookie-settings]');
+    var links = document.querySelectorAll('[data-analytics-toggle]');
     Array.prototype.forEach.call(links, function (link) {
       link.addEventListener('click', function (e) {
         e.preventDefault();
-        showBanner();
+        if (isOptedOut()) {
+          setOptedOut(false);
+          loadAnalytics();
+          updateLinks();
+        } else {
+          setOptedOut(true);
+          clearAnalyticsCookies();
+          // Reload so the already-running Google script stops.
+          if (window.__ptAnalyticsLoaded) location.reload();
+          else updateLinks();
+        }
       });
     });
   }
