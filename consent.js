@@ -4,7 +4,7 @@
  * The choice is remembered in this browser; "Cookie settings" in the footer reopens the banner.
  */
 (function () {
-  var GA_ID = 'G-BQBSKFRNF9'; // Google Analytics Measurement ID
+  var GTM_ID = 'GTM-NS3J2PG5'; // Google tag for the PT Licensing GA4 property
   var KEY = 'pt-cookie-consent';
 
   function getChoice() {
@@ -16,16 +16,15 @@
   }
 
   function loadAnalytics() {
-    if (window.__ptAnalyticsLoaded || GA_ID.indexOf('XXXX') !== -1) return;
+    if (window.__ptAnalyticsLoaded) return;
     window.__ptAnalyticsLoaded = true;
-    var s = document.createElement('script');
-    s.async = true;
-    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
-    document.head.appendChild(s);
     window.dataLayer = window.dataLayer || [];
     window.gtag = function () { window.dataLayer.push(arguments); };
     window.gtag('js', new Date());
-    window.gtag('config', GA_ID);
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtm.js?id=' + GTM_ID;
+    document.head.appendChild(s);
   }
 
   function clearAnalyticsCookies() {
